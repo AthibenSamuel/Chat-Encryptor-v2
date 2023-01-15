@@ -3,15 +3,6 @@ from cryptography.fernet import Fernet
 from PyQt6.QtWidgets import (QApplication, QWidget, QLineEdit, QPushButton, QVBoxLayout, QLabel, QDialog)
 from PyQt6.QtCore import Qt
 
-def encrypt(data, key):
-    encryptor = Fernet(key)
-    encrypted = encryptor.encrypt(bytes(data, 'utf-8'))
-    return encrypted
-def decrypt(encrypted_text, key):
-    f = Fernet(key)
-    dec = f.decrypt(encrypted_text)
-    return dec.decode('utf-8')
-
 class Window(QWidget):
     def __init__(self):
         super().__init__()
@@ -28,7 +19,11 @@ class Window(QWidget):
         def decode():
             text1=self.input2.text()
             key=get_key()
-            normal_text = decrypt(text1.encode('utf-8'),key)
+            #normal_text = decrypt(text1,key)
+            text1=text1.encode('utf-8')
+            f = Fernet(key)
+            dec = f.decrypt(text1)
+            normal_text = dec.decode('utf-8')
             msg=QDialog(parent=self)
             msg.setWindowTitle("Decrypted Text")
             layout.addWidget(msg,alignment=Qt.AlignmentFlag.AlignCenter)
@@ -40,8 +35,9 @@ class Window(QWidget):
         def encode():
             text1=self.input1.text()
             key=get_key()
-            txt=encrypt(text1,key)
-            pyperclip.copy(str(txt.decode('utf-8')))
+            encryptor = Fernet(key)
+            encrypted = encryptor.encrypt(bytes(text1, 'utf-8'))
+            pyperclip.copy(str(encrypted.decode('utf-8')))
 
         def clear():
             self.input.clear()
