@@ -18,10 +18,8 @@ class Window(QWidget):
 
         def decode():
             text1=self.input2.text()
-            key=get_key()
-            #normal_text = decrypt(text1,key)
             text1=text1.encode('utf-8')
-            f = Fernet(key)
+            f = Fernet(get_key())
             dec = f.decrypt(text1)
             normal_text = dec.decode('utf-8')
             msg=QDialog(parent=self)
@@ -34,8 +32,7 @@ class Window(QWidget):
 
         def encode():
             text1=self.input1.text()
-            key=get_key()
-            encryptor = Fernet(key)
+            encryptor = Fernet(get_key())
             encrypted = encryptor.encrypt(bytes(text1, 'utf-8'))
             pyperclip.copy(str(encrypted.decode('utf-8')))
 
@@ -92,7 +89,7 @@ class Window(QWidget):
         layout.addWidget(button)
 
 
-        button = QPushButton("Clear All")
+        button = QPushButton("Clear All Fields")
         button.clicked.connect(clear)
         layout.addWidget(button)
 
