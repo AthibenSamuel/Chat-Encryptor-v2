@@ -1,4 +1,4 @@
-import pyperclip
+import pyperclip, qdarktheme
 from cryptography.fernet import Fernet
 from PyQt6.QtWidgets import (QApplication, QWidget, QLineEdit, QPushButton, QVBoxLayout, QLabel, QDialog)
 from PyQt6.QtCore import Qt
@@ -10,7 +10,7 @@ class Window(QWidget):
         self.setWindowTitle("Chat Encryptor v2.1")
 
         layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.setLayout(layout)  
 
         def get_key():
             key=self.input.text()
@@ -95,6 +95,7 @@ class Window(QWidget):
 
         
 app = QApplication([])
+qdarktheme.setup_theme()
 window = Window()
 window.show()
 app.exec()
